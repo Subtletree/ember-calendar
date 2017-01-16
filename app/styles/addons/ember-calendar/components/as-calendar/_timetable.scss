@@ -34,6 +34,10 @@
     }
   }
 
+  @include bem-element('day-title') {
+    margin-left: 10%;
+  }
+
   @include bem-element('column-item' 'day') {
     float: left;
     height: 100%;

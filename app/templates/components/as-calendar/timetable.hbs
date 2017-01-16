@@ -1,14 +1,9 @@
 <div class="as-calendar-timetable__row as-calendar-timetable__row--highlighted">
   <div class="as-calendar-timetable__first-column">
-    {{as-calendar/time-zone-select
-      value=timeZone
-      options=timeZoneOptions
-      defaultQuery=defaultTimeZoneQuery
-      showSearch=showTimeZoneSearch
-      onChangeTimeZone=(action this.attrs.onChangeTimeZone)}}
+
   </div>
 
-  <div class="as-calendar-timetable__columns">
+  <div class="as-calendar-timetable__columns as-calendar-timetable__day-title">
     <ul>
       {{#each days as |day|}}
         <li class="as-calendar-timetable__column-item {{if day.isToday "as-calendar-timetable__column-item--highlighted"}}">
