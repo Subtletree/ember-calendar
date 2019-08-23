@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import { on } from '@ember/object/evented';
 import EmberObject, { computed } from '@ember/object';
 import moment from 'moment';
@@ -48,7 +48,7 @@ export default EmberObject.extend({
   }),
 
   createOccurrence: function(options) {
-    var content = merge({
+    var content = assign({
       endsAt: moment(options.startsAt)
         .add(this.get('defaultOccurrenceDuration')).toDate(),
 

@@ -20,7 +20,6 @@ action](https://raw.githubusercontent.com/alphasights/ember-calendar/develop/ima
 * Drag and drop occurrences
 * Time zone agnostic
 
-## Installation
 
 `ember install ember-calendar`
 

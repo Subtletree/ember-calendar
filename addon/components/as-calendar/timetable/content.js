@@ -56,7 +56,7 @@ export default Component.extend({
 
     var timeSlot = this.get('timeSlots').objectAt(timeSlotIndex);
 
-    this.attrs.onSelectTime(
+    this.onSelectTime(
       moment(day.get('value')).add(timeSlot.get('time'))
     );
   },

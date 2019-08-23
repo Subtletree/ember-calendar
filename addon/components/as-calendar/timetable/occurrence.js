@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { run } from '@ember/runloop';
 import { oneWay } from '@ember/object/computed';
 import moment from 'moment';
-import interact from 'interact';
+import interact from 'interactjs';
 import OccurrenceComponent from '../occurrence';
 
 export default OccurrenceComponent.extend({
@@ -92,7 +92,7 @@ export default OccurrenceComponent.extend({
   },
 
   _resizeEnd: function() {
-    this.attrs.onUpdate(this.get('content'), {
+    this.onUpdate(this.get('content'), {
       endsAt: this.get('_preview.content.endsAt')
     });
 
@@ -158,7 +158,7 @@ export default OccurrenceComponent.extend({
   },
 
   _dragEnd: function() {
-    this.attrs.onUpdate(this.get('content'), {
+    this.onUpdate(this.get('content'), {
       startsAt: this.get('_preview.content.startsAt'),
       endsAt: this.get('_preview.content.endsAt')
     });
@@ -176,7 +176,7 @@ export default OccurrenceComponent.extend({
 
   _validateAndSavePreview: function(changes) {
     if (this._validatePreviewChanges(changes)) {
-      this.attrs.onUpdate(this.get('_preview.content'), changes);
+      this.onUpdate(this.get('_preview.content'), changes);
     }
   },
 
@@ -196,7 +196,7 @@ export default OccurrenceComponent.extend({
 
   actions: {
     remove: function() {
-      this.attrs.onRemove(this.get('content'));
+      this.onRemove(this.get('content'));
     }
   }
 });

@@ -1,11 +1,11 @@
 import { oneWay } from '@ember/object/computed';
 import EmberObject, { computed } from '@ember/object';
-import Ember from 'ember';
 import moment from 'moment';
 import computedMoment from 'ember-calendar/macros/computed-moment';
 import Day from './day';
 
-var OccurrenceProxy = EmberObject.extend(Ember.Copyable, {
+
+var OccurrenceProxy = EmberObject.extend({
   calendar: null,
   content: null,
   endingTime: computedMoment('content.endsAt'),

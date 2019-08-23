@@ -25,8 +25,8 @@
               timetable=timetable
               timeSlotHeight=timeSlotHeight
               timeSlotDuration=timeSlotDuration
-              onUpdate=(action this.attrs.onUpdateOccurrence)
-              onRemove=(action this.attrs.onRemoveOccurrence))
+              onUpdate=(action onUpdateOccurrence)
+              onRemove=(action onRemoveOccurrence))
             staticOccurrence=(component 'as-calendar/occurrence'
               day=day
               model=occurrence
@@ -40,8 +40,8 @@
             day=day
             timetable=timetable
             timeSlotDuration=timeSlotDuration
-            onUpdate=(action this.attrs.onUpdateOccurrence)
-            onRemove=(action this.attrs.onRemoveOccurrence)}}
+            onUpdate=(action onUpdateOccurrence)
+            onRemove=(action onRemoveOccurrence)}}
         {{/if}}
       </li>
     {{/each}}

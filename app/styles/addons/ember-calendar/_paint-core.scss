@@ -114,7 +114,7 @@ $colors: (
 
     @each $function, $value in $adjust {
       @if function-exists($function) {
-        $output-color: call($function, $output-color, $value);
+        $output-color: call(get-function($function), $output-color, $value);
       } @else {
         @error "Function '#{$function}' in #{$adjust} doesn't exist.";
       }
