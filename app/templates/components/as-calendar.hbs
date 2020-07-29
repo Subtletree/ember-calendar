@@ -1,32 +1,47 @@
 {{#if showHeader}}
-  {{as-calendar/header 
-    title=title 
-    model=model 
+  {{as-calendar/header
+    title=title
+    model=model
+    disablePast=disablePast
+    backButton=backButton
+    nextButton=nextButton
+    todayButton=todayButton
     onNavigateWeek=(action "onNavigateWeek")}}
 {{/if}}
 
 {{#as-calendar/timetable
   model=model
-  timeZone=timeZone
-  timeZoneOptions=timeZoneOptions
-  showTimeZoneSearch=showTimeZoneSearch
   timeSlotHeight=timeSlotHeight
-  defaultTimeZoneQuery=defaultTimeZoneQuery
-  onSelectTime=(action "addOccurrence")
-  onChangeTimeZone=(action "changeTimeZone") as |day timetable|}}
+  onSelectTime=(action "addOccurrence") as |day timetable|}}
   <ul class="occurrences">
     {{#each day.occurrences as |occurrence|}}
       <li>
         {{#if hasBlock}}
-          {{yield occurrence timetable this}}
+          {{yield (hash
+            model=occurrence
+            occurrence=(component 'as-calendar/timetable/occurrence'
+              day=day
+              model=occurrence
+              timetable=timetable
+              timeSlotHeight=timeSlotHeight
+              timeSlotDuration=timeSlotDuration
+              onUpdate=(action onUpdateOccurrence)
+              onRemove=(action onRemoveOccurrence))
+            staticOccurrence=(component 'as-calendar/occurrence'
+              day=day
+              model=occurrence
+              timeSlotHeight=timeSlotHeight
+              timeSlotDuration=timeSlotDuration)
+          )}}
         {{else}}
           {{as-calendar/timetable/occurrence
             model=occurrence
             timeSlotHeight=timeSlotHeight
+            day=day
             timetable=timetable
             timeSlotDuration=timeSlotDuration
-            onUpdate=(action this.attrs.onUpdateOccurrence)
-            onRemove=(action this.attrs.onRemoveOccurrence)}}
+            onUpdate=(action onUpdateOccurrence)
+            onRemove=(action onRemoveOccurrence)}}
         {{/if}}
       </li>
     {{/each}}
@@ -36,6 +51,7 @@
         {{as-calendar/occurrence
           class="as-calendar-occurrence--preview"
           model=day.occurrencePreview
+          day=day
           timeSlotHeight=timeSlotHeight
           timeSlotDuration=timeSlotDuration}}
       </li>

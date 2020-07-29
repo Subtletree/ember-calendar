@@ -1,24 +1,24 @@
+import { A } from '@ember/array';
+import EmberObject, { computed } from '@ember/object';
 import moment from 'moment';
-import Ember from 'ember';
 
-var TimeSlot = Ember.Object.extend({
+var TimeSlot = EmberObject.extend({
   duration: null,
   time: null,
-  timeZone: null,
 
-  endingTime: Ember.computed('time', 'duration', function() {
+  endingTime: computed('time', 'duration', function() {
     return moment.duration(this.get('time')).add(this.get('duration'));
   }),
 
-  day: Ember.computed('timeZone', function() {
-    return moment().tz(this.get('timeZone')).startOf('day');
+  day: computed(function() {
+    return moment().startOf('day');
   }),
 
-  value: Ember.computed('day', 'time', function() {
+  value: computed('day', 'time', function() {
     return moment(this.get('day')).add(this.get('time'));
   }),
 
-  endingValue: Ember.computed('day', 'endingTime', function() {
+  endingValue: computed('day', 'endingTime', function() {
     return moment(this.get('day')).add(this.get('endingTime'));
   }),
 
@@ -34,7 +34,6 @@ var TimeSlot = Ember.Object.extend({
     var duration = this.get('duration');
 
     return TimeSlot.create({
-      timeZone: this.get('timeZone'),
       time: moment.duration(this.get('time')).add(duration),
       duration: duration
     });
@@ -43,10 +42,9 @@ var TimeSlot = Ember.Object.extend({
 
 TimeSlot.reopenClass({
   buildDay: function(options) {
-    var timeSlots = Ember.A();
+    var timeSlots = A();
 
     var currentTimeSlot = this.create({
-      timeZone: options.timeZone,
       time: options.startingTime,
       duration: options.duration
     });

@@ -18,10 +18,8 @@ action](https://raw.githubusercontent.com/alphasights/ember-calendar/develop/ima
 * Click to add occurrences
 * Resize occurrences
 * Drag and drop occurrences
-* Timezone aware
-* Search and change timezones
+* Time zone agnostic
 
-## Installation
 
 `ember install ember-calendar`
 
@@ -52,7 +50,6 @@ the original object in the template, it is available as `occurrence.content`.
 {{as-calendar
   title="Ember Calendar"
   occurrences=occurrences
-  defaultTimeZoneQuery="New York|London|Dubai|Hong Kong"
   dayStartingTime="9:00"
   dayEndingTime="18:00"
   timeSlotDuration="00:30"
@@ -100,9 +97,6 @@ example, you can customize the appearance of the occurrences by passing a block:
   dayStartingTime="7:00"
   dayEndingTime="21:30"
   timeSlotDuration="00:30"
-  timeZoneOptions=timeZoneOptions
-  showTimeZoneSearch=false
-  timeZone=timeZone
   onNavigateWeek=(action "calendarNavigateWeek")
   onAddOccurrence=(action "calendarAddOccurrence") as |occurrence timetable calendar|}}
   {{#if occurrence.content.isEditable}}
@@ -139,24 +133,12 @@ You can customize the time slots by passing these options:
 * `defaultOccurrenceTitle`
 * `defaultOccurrenceDuration`
 
-In addition, you can customize the timezone handling using these options:
-
-* `timeZone`
-* `timeZoneOptions`
-* `defaultTimeZoneQuery`
-* `showTimeZoneSearch`
-
 ## Styles
 
 We do not add any vendor CSS to your app by default, but you can include it if you want by doing:
 
 ```scss
 // app/styles/app.scss
-
-@import 'bower_components/fontawesome/scss/variables';
-@import 'bower_components/fontawesome/scss/path';
-@import 'bower_components/fontawesome/scss/mixins';
-@import 'bower_components/fontawesome/scss/icons';
 
 @import 'addons/ember-calendar/paint-core';
 @import 'addons/ember-calendar/main';
@@ -165,28 +147,6 @@ We do not add any vendor CSS to your app by default, but you can include it if y
 There are some basic resets applied by default on `.as-calendar`, like `box-sizing: border-box` and `list-style: none` for all inner `ul > li`s.
 
 If you already have those resets in your app add an `$as-calendar-global-resets: false;` before loading the `main` stylesheet.
-
-## Build Options
-
-Font Aweseome assets are exported during a build by default which may conflict
-with assets already being exported by your project. To prevent this, add
-the following option to your ember-cli-build.js file:
-
-```js
-// ember-cli-build.js
-
-module.exports = function(defaults) {
-  var app = new EmberApp(defaults, {
-
-    // Add options here
-    emberCalendar: {
-      includeFontAwesomeAssets: false
-    }
-  });
-
-  return app.toTree();
-};
-```
 
 ## Developing
 

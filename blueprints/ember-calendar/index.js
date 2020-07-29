@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
 module.exports = {
@@ -8,18 +8,11 @@ module.exports = {
     var self = this;
 
     return self.addAddonsToProject({
-      packages: [{ name: 'ember-moment', target: '6.1.0' }]
+      packages: [{ name: 'ember-moment', target: '^7.4.1' }]
     }).then(function() {
       return self.addPackagesToProject([
-        { name: 'ember-cli-sass', target: '5.6.0' },
-        { name: 'liquid-fire', target: '0.27.0' }
+        { name: 'ember-cli-sass', target: '^7.0.0' },
       ]);
-    }).then(function() {
-      return self.addBowerPackagesToProject([
-        { name: 'interact', target: '1.2.8' },
-        { name: 'jquery-simulate', target: '1.0.1' },
-        { name: 'lodash', target: '3.10.0' },
-      ]);
-    });
+    })
   }
 };

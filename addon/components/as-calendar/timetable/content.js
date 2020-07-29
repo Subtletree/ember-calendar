@@ -1,21 +1,24 @@
-import Ember from 'ember';
+import { htmlSafe } from '@ember/string';
+import { computed } from '@ember/object';
+import { oneWay } from '@ember/object/computed';
+import Component from '@ember/component';
 import moment from 'moment';
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNameBindings: [':as-calendar-timetable-content'],
   attributeBindings: ['_style:style'],
 
-  days: Ember.computed.oneWay('model.days'),
+  days: oneWay('model.days'),
   model: null,
-  timeSlotDuration: Ember.computed.oneWay('model.timeSlotDuration'),
-  timeSlots: Ember.computed.oneWay('model.timeSlots'),
+  timeSlotDuration: oneWay('model.timeSlotDuration'),
+  timeSlots: oneWay('model.timeSlots'),
   timetable: null,
 
-  timeSlotStyle: Ember.computed('timeSlotHeight', function() {
-    return Ember.String.htmlSafe(`height: ${this.get('timeSlotHeight')}px`);
+  timeSlotStyle: computed('timeSlotHeight', function() {
+    return htmlSafe(`height: ${this.get('timeSlotHeight')}px`);
   }),
 
-  dayWidth: Ember.computed(function() {
+  dayWidth: computed(function() {
     if (this.get('_wasInserted')) {
       return this.$().width() / this.get('days.length');
     } else {
@@ -25,34 +28,56 @@ export default Ember.Component.extend({
 
   _wasInserted: false,
 
-  _style: Ember.computed(
+  _style: computed(
   'timeSlotHeight',
   'timeSlots.length', function() {
-    return Ember.String.htmlSafe(`height: ${this.get('timeSlots.length') *
+    return htmlSafe(`height: ${this.get('timeSlots.length') *
                        this.get('timeSlotHeight')}px;`);
   }),
 
-  _setWasInserted: Ember.on('didInsertElement', function() {
+  didInsertElement() {
+    this._super(...arguments);
     this.set('_wasInserted', true);
-  }),
+  },
 
-  _registerWithParent: Ember.on('init', function() {
+  init() {
+    this._super(...arguments);
     this.set('timetable.contentComponent', this);
-  }),
+  },
 
-  _selectTime: Ember.on('click', function(event) {
+  click(event) {
     var offset = this.$().offset();
     var offsetX = event.pageX - Math.floor(offset.left);
     var offsetY = event.pageY - Math.floor(offset.top);
 
     var dayIndex = Math.floor(offsetX / this.get('dayWidth'));
     var timeSlotIndex = Math.floor(offsetY / this.get('timeSlotHeight'));
-    var day = this.get('days').objectAt(dayIndex);
+    var day = this.get('days')[dayIndex];
 
     var timeSlot = this.get('timeSlots').objectAt(timeSlotIndex);
 
-    this.attrs.onSelectTime(
+    this.onSelectTime(
       moment(day.get('value')).add(timeSlot.get('time'))
     );
+  },
+
+  today: computed('days', function() {
+    return this.get('days').find(day => {
+      return day.get('isToday');
+    });
+  }),
+
+  todayTop: computed(
+    'today.startingTime',
+    'model.timeSlotDuration',
+    'timeSlotHeight', function() {
+    const now = moment();
+    return (now.diff(this.get('today.startingTime')) /
+            this.get('model.timeSlotDuration').as('ms')) *
+            this.get('timeSlotHeight');
+  }),
+
+  todayStyle: computed('_top', function() {
+    return htmlSafe(`top: ${this.get('todayTop')}px;`);
   })
 });

@@ -1,10 +1,9 @@
-import jstz from 'jstz';
-import Ember from 'ember';
+import Component from '@ember/component';
 import ComponentCalendar from 'ember-calendar/models/component-calendar';
 //import InboundActionsMixin from 'ember-component-inbound-actions/inbound-actions';
 
 //export default Ember.Component.extend(InboundActionsMixin, {
-export default Ember.Component.extend({
+export default Component.extend({
   classNameBindings: [':as-calendar'],
   tagName: 'section',
 
@@ -12,38 +11,35 @@ export default Ember.Component.extend({
   dayStartingTime: '8:00',
   defaultOccurrenceDuration: '1:00',
   defaultOccurrenceTitle: 'New event',
-  defaultTimeZoneQuery: '',
   isEditing: true,
   model: null,
   occurrences: null,
   showHeader: true,
-  showTimeZoneSearch: true,
   startingDate: null,
   timeSlotDuration: '00:30',
   timeSlotHeight: 20,
-  timeZone: jstz.determine().name(),
   title: null,
 
-  _initializeModel: Ember.on('init', function() {
+  disablePast: false,
+  highlightNow: true,
+
+  init() {
+    this._super(...arguments);
     this.set('model', ComponentCalendar.create({ component: this }));
-  }),
+  },
 
   actions: {
-    changeTimeZone: function(timeZone) {
-      this.set('timeZone', timeZone);
-    },
-
-    addOccurrence: function(time) {
-      var occurrence = this.get('model').createOccurrence({
+    addOccurrence(time) {
+      let occurrence = this.get('model').createOccurrence({
         startsAt: time.toDate()
       });
 
-      this.attrs['onAddOccurrence'](occurrence.get('content'));
+      this.get('onAddOccurrence')(occurrence.get('content'));
     },
 
-    onNavigateWeek: function(index) {
-      if (this.attrs['onNavigateWeek']) {
-        this.attrs['onNavigateWeek'](index);
+    onNavigateWeek(index) {
+      if (this.get('onNavigateWeek')) {
+        this.get('onNavigateWeek')(index);
       }
     }
   }
