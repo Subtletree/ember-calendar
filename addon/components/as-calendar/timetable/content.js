@@ -15,11 +15,11 @@ export default Component.extend({
   timetable: null,
 
   timeSlotStyle: computed('timeSlotHeight', function() {
-    return htmlSafe(`height: ${this.get('timeSlotHeight')}px`);
+    return htmlSafe(`height: ${this.timeSlotHeight}px`);
   }),
 
   dayWidth: computed(function() {
-    if (this.get('_wasInserted')) {
+    if (this._wasInserted) {
       return this.$().width() / this.get('days.length');
     } else {
       return 0;
@@ -32,7 +32,7 @@ export default Component.extend({
   'timeSlotHeight',
   'timeSlots.length', function() {
     return htmlSafe(`height: ${this.get('timeSlots.length') *
-                       this.get('timeSlotHeight')}px;`);
+                       this.timeSlotHeight}px;`);
   }),
 
   didInsertElement() {
@@ -50,20 +50,20 @@ export default Component.extend({
     var offsetX = event.pageX - Math.floor(offset.left);
     var offsetY = event.pageY - Math.floor(offset.top);
 
-    var dayIndex = Math.floor(offsetX / this.get('dayWidth'));
-    var timeSlotIndex = Math.floor(offsetY / this.get('timeSlotHeight'));
-    var day = this.get('days')[dayIndex];
+    var dayIndex = Math.floor(offsetX / this.dayWidth);
+    var timeSlotIndex = Math.floor(offsetY / this.timeSlotHeight);
+    var day = this.days[dayIndex];
 
-    var timeSlot = this.get('timeSlots').objectAt(timeSlotIndex);
+    var timeSlot = this.timeSlots.objectAt(timeSlotIndex);
 
     this.onSelectTime(
-      moment(day.get('value')).add(timeSlot.get('time'))
+      moment(day.value).add(timeSlot.time)
     );
   },
 
   today: computed('days', function() {
-    return this.get('days').find(day => {
-      return day.get('isToday');
+    return this.days.find(day => {
+      return day.isToday;
     });
   }),
 
@@ -74,10 +74,10 @@ export default Component.extend({
     const now = moment();
     return (now.diff(this.get('today.startingTime')) /
             this.get('model.timeSlotDuration').as('ms')) *
-            this.get('timeSlotHeight');
+            this.timeSlotHeight;
   }),
 
   todayStyle: computed('_top', function() {
-    return htmlSafe(`top: ${this.get('todayTop')}px;`);
+    return htmlSafe(`top: ${this.todayTop}px;`);
   })
 });

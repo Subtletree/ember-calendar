@@ -14,20 +14,20 @@ var OccurrenceProxy = EmberObject.extend({
 
   duration: computed('startingTime', 'endingTime', function() {
     return moment.duration(
-      this.get('endingTime').diff(this.get('startingTime'))
+      this.endingTime.diff(this.startingTime)
     );
   }),
 
   day: computed('startingTime', 'calendar', function() {
     return Day.create({
-      calendar: this.get('calendar'),
-      offset: this.get('startingTime').isoWeekday() - 1
+      calendar: this.calendar,
+      offset: this.startingTime.isoWeekday() - 1
     });
   }),
 
   copy: function() {
     return OccurrenceProxy.create({
-      calendar: this.get('calendar'),
+      calendar: this.calendar,
 
       content: EmberObject.create({
         startsAt: this.get('content.startsAt'),

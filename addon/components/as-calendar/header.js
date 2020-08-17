@@ -11,23 +11,23 @@ export default Component.extend({
   title: '',
 
   showPrevWeekButton: computed('disablePast', 'isInCurrentWeek', function() {
-    return !this.get('disablePast') && !this.get('isInCurrentWeek');
+    return !this.disablePast && !this.isInCurrentWeek;
   }),
 
   actions: {
     navigateWeek: function(index) {
-      this.get('model').navigateWeek(index);
+      this.model.navigateWeek(index);
 
-      if (this.get('onNavigateWeek')) {
-        this.get('onNavigateWeek')(index);
+      if (this.onNavigateWeek) {
+        this.onNavigateWeek(index);
       }
     },
 
     goToCurrentWeek: function() {
-      this.get('model').goToCurrentWeek();
+      this.model.goToCurrentWeek();
 
-      if (this.get('onNavigateWeek')) {
-        this.get('onNavigateWeek')(0);
+      if (this.onNavigateWeek) {
+        this.onNavigateWeek(0);
       }
     }
   }

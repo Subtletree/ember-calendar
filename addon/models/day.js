@@ -9,7 +9,7 @@ var Day = EmberObject.extend({
   offset: 0,
 
   value: computed('_week', 'offset', function() {
-    return moment(this.get('_week')).add(this.get('offset'), 'day');
+    return moment(this._week).add(this.offset, 'day');
   }),
 
   occurrences: computed(
@@ -18,8 +18,8 @@ var Day = EmberObject.extend({
     'endingTime', function() {
     return this.get('calendar.occurrences').filter(occurrence => {
 
-      return occurrence.get('startingTime') < this.get('endingTime') &&
-             occurrence.get('endingTime') > this.get('startingTime');
+      return occurrence.startingTime < this.endingTime &&
+             occurrence.endingTime > this.startingTime;
     });
   }),
 
@@ -32,8 +32,8 @@ var Day = EmberObject.extend({
     if (occurrencePreview != null) {
       var startingTime = occurrencePreview.get('startingTime');
 
-      if (startingTime >= this.get('startingTime') &&
-          startingTime <= this.get('endingTime')) {
+      if (startingTime >= this.startingTime &&
+          startingTime <= this.endingTime) {
         return occurrencePreview;
       } else {
         return null;
@@ -46,19 +46,19 @@ var Day = EmberObject.extend({
   startingTime: computed(
     'value',
     '_timeSlots.firstObject.time', function() {
-    return moment(this.get('value'))
+    return moment(this.value)
       .add(this.get('_timeSlots.firstObject.time'));
   }),
 
   endingTime: computed(
     'value',
     '_timeSlots.lastObject.endingTime', function() {
-    return moment(this.get('value'))
+    return moment(this.value)
       .add(this.get('_timeSlots.lastObject.endingTime'));
   }),
 
   isToday: computed('value', function() {
-    return this.get('value').isSame(moment(), 'day');
+    return this.value.isSame(moment(), 'day');
   }),
 
   _week: oneWay('calendar.week'),

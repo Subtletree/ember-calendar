@@ -16,19 +16,19 @@ export default Component.extend({
   referenceElement: oneWay('contentComponent.element'),
 
   labeledTimeSlots: computed('timeSlots.[]', function() {
-    return this.get('timeSlots').filter(function(_, index) {
+    return this.timeSlots.filter(function(_, index) {
       return (index % 2) === 0;
     });
   }),
 
   timeSlotLabelListStyle: computed('timeSlotHeight', function() {
-    var timeSlotHeight = this.get('timeSlotHeight');
+    var timeSlotHeight = this.timeSlotHeight;
 
     return htmlSafe(`margin-top: -${timeSlotHeight}px;
              line-height: ${timeSlotHeight * 2}px;`);
   }),
 
   timeSlotLabelStyle: computed('timeSlotHeight', function() {
-    return htmlSafe(`height: ${2 * this.get('timeSlotHeight')}px;`);
+    return htmlSafe(`height: ${2 * this.timeSlotHeight}px;`);
   })
 });

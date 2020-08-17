@@ -15,7 +15,7 @@ export default EmberObject.extend({
   occurrencePreview: null,
 
   isInCurrentWeek: computed('week', '_currentWeek', function() {
-    return this.get('week').isSame(this.get('_currentWeek'));
+    return this.week.isSame(this._currentWeek);
   }),
 
   timeSlots: computed(
@@ -23,9 +23,9 @@ export default EmberObject.extend({
     'dayEndingTime',
     'timeSlotDuration', function() {
     return TimeSlot.buildDay({
-      startingTime: this.get('dayStartingTime'),
-      endingTime: this.get('dayEndingTime'),
-      duration: this.get('timeSlotDuration')
+      startingTime: this.dayStartingTime,
+      endingTime: this.dayEndingTime,
+      duration: this.timeSlotDuration
     });
   }),
 
@@ -34,7 +34,7 @@ export default EmberObject.extend({
   }),
 
   week: computed('startingTime', function() {
-    return moment(this.get('startingTime')).startOf('isoWeek');
+    return moment(this.startingTime).startOf('isoWeek');
   }),
 
   _currentWeek: computed(function() {
@@ -42,7 +42,7 @@ export default EmberObject.extend({
   }),
 
   initializeCalendar: on('init', function() {
-    if (this.get('startingTime') == null) {
+    if (this.startingTime == null) {
       this.goToCurrentWeek();
     }
   }),
@@ -50,9 +50,9 @@ export default EmberObject.extend({
   createOccurrence: function(options) {
     var content = assign({
       endsAt: moment(options.startsAt)
-        .add(this.get('defaultOccurrenceDuration')).toDate(),
+        .add(this.defaultOccurrenceDuration).toDate(),
 
-      title: this.get('defaultOccurrenceTitle')
+      title: this.defaultOccurrenceTitle
     }, options);
 
     return OccurrenceProxy.create({
@@ -62,7 +62,7 @@ export default EmberObject.extend({
   },
 
   navigateWeek: function(index) {
-    this.set('startingTime', moment(this.get('startingTime')).add(index, 'weeks'));
+    this.set('startingTime', moment(this.startingTime).add(index, 'weeks'));
   },
 
   goToCurrentWeek: function() {

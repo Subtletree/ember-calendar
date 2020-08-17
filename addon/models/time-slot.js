@@ -7,7 +7,7 @@ var TimeSlot = EmberObject.extend({
   time: null,
 
   endingTime: computed('time', 'duration', function() {
-    return moment.duration(this.get('time')).add(this.get('duration'));
+    return moment.duration(this.time).add(this.duration);
   }),
 
   day: computed(function() {
@@ -15,26 +15,26 @@ var TimeSlot = EmberObject.extend({
   }),
 
   value: computed('day', 'time', function() {
-    return moment(this.get('day')).add(this.get('time'));
+    return moment(this.day).add(this.time);
   }),
 
   endingValue: computed('day', 'endingTime', function() {
-    return moment(this.get('day')).add(this.get('endingTime'));
+    return moment(this.day).add(this.endingTime);
   }),
 
   isInRange: function(startingTime, endingTime) {
-    var value = this.get('value');
-    var day = this.get('day');
+    var value = this.value;
+    var day = this.day;
 
     return value >= moment(day).add(startingTime) &&
-           this.get('endingValue') <= moment(day).add(endingTime);
+           this.endingValue <= moment(day).add(endingTime);
   },
 
   next: function() {
-    var duration = this.get('duration');
+    var duration = this.duration;
 
     return TimeSlot.create({
-      time: moment.duration(this.get('time')).add(duration),
+      time: moment.duration(this.time).add(duration),
       duration: duration
     });
   }

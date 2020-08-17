@@ -18,7 +18,7 @@ export default Component.extend({
   computedTimeSlotDuration: computedDuration('timeSlotDuration'),
 
   titleStyle: computed('timeSlotHeight', function() {
-    return htmlSafe(`line-height: ${this.get('timeSlotHeight')}px;`);
+    return htmlSafe(`line-height: ${this.timeSlotHeight}px;`);
   }),
 
   _dayStartingTime: oneWay('day.startingTime'),
@@ -26,16 +26,16 @@ export default Component.extend({
   _dayEndingTime: oneWay('day.endingTime'),
 
   _startingTime: computed('model.startingTime', '_dayStartingTime', function() {
-    if (this.get('model.startingTime').isBefore(this.get('_dayStartingTime'))) {
-      return this.get('_dayStartingTime');
+    if (this.get('model.startingTime').isBefore(this._dayStartingTime)) {
+      return this._dayStartingTime;
     } else {
       return this.get('model.startingTime');
     }
   }),
 
   _endingTime: computed('model.endingTime', '_dayEndingTime', function() {
-    if (this.get('model.endingTime').isAfter(this.get('_dayEndingTime'))) {
-      return this.get('_dayEndingTime');
+    if (this.get('model.endingTime').isAfter(this._dayEndingTime)) {
+      return this._dayEndingTime;
     } else {
       return this.get('model.endingTime');
     }
@@ -43,19 +43,19 @@ export default Component.extend({
 
   _duration: computed('_startingTime', '_endingTime', function() {
     return moment.duration(
-      this.get('_endingTime').diff(this.get('_startingTime'))
+      this._endingTime.diff(this._startingTime)
     );
   }),
 
   _occupiedTimeSlots: computed(
     '_duration',
     'computedTimeSlotDuration', function() {
-      return this.get('_duration').as('ms') /
-             this.get('computedTimeSlotDuration').as('ms');
+      return this._duration.as('ms') /
+             this.computedTimeSlotDuration.as('ms');
   }),
 
   _height: computed('_occupiedTimeSlots', function() {
-    return this.get('timeSlotHeight') * this.get('_occupiedTimeSlots');
+    return this.timeSlotHeight * this._occupiedTimeSlots;
   }),
 
   _top: computed(
@@ -63,14 +63,14 @@ export default Component.extend({
     '_dayStartingTime',
     'computedTimeSlotDuration',
     'timeSlotHeight', function() {
-    return (this.get('_startingTime').diff(this.get('_dayStartingTime')) /
-            this.get('computedTimeSlotDuration').as('ms')) *
-            this.get('timeSlotHeight');
+    return (this._startingTime.diff(this._dayStartingTime) /
+            this.computedTimeSlotDuration.as('ms')) *
+            this.timeSlotHeight;
   }),
 
   _style: computed('_height', '_top', function() {
-    return htmlSafe(`top: ${this.get('_top')}px;
-            height: ${this.get('_height')}px;`);
+    return htmlSafe(`top: ${this._top}px;
+            height: ${this._height}px;`);
   }),
 
   click(event) {

@@ -30,16 +30,16 @@ export default Component.extend({
 
   actions: {
     addOccurrence(time) {
-      let occurrence = this.get('model').createOccurrence({
+      let occurrence = this.model.createOccurrence({
         startsAt: time.toDate()
       });
 
-      this.get('onAddOccurrence')(occurrence.get('content'));
+      this.onAddOccurrence(occurrence.get('content'));
     },
 
     onNavigateWeek(index) {
-      if (this.get('onNavigateWeek')) {
-        this.get('onNavigateWeek')(index);
+      if (this.onNavigateWeek) {
+        this.onNavigateWeek(index);
       }
     }
   }

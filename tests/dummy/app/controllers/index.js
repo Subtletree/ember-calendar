@@ -8,21 +8,21 @@ export default Controller.extend({
   occurrences: null,
 
   _initializeDefaults: on('init', function() {
-    if (this.get('selections') == null) {
+    if (this.selections == null) {
       this.set('selections', A());
     }
 
-    if (this.get('occurrences') == null) {
+    if (this.occurrences == null) {
       this.set('occurrences', A());
     }
   }),
 
   actions: {
     calendarAddOccurrence: function(occurrence) {
-      this.get('occurrences').pushObject(EmberObject.create({
-        title: occurrence.get('title'),
-        startsAt: occurrence.get('startsAt'),
-        endsAt: occurrence.get('endsAt')
+      this.occurrences.pushObject(EmberObject.create({
+        title: occurrence.title,
+        startsAt: occurrence.startsAt,
+        endsAt: occurrence.endsAt
       }));
     },
 
@@ -31,7 +31,7 @@ export default Controller.extend({
     },
 
     calendarRemoveOccurrence: function(occurrence) {
-      this.get('occurrences').removeObject(occurrence);
+      this.occurrences.removeObject(occurrence);
     }
   }
 });

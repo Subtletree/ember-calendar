@@ -25,11 +25,11 @@ module('AsCalendarComponent', function(hooks) {
     this.set('occurrences', A());
 
     this.actions.calendarAddOccurrence = (occurrence) => {
-      this.get('occurrences').pushObject(occurrence);
+      this.occurrences.pushObject(occurrence);
     };
 
     this.actions.calendarRemoveOccurrence = (occurrence) => {
-      this.get('occurrences').removeObject(occurrence);
+      this.occurrences.removeObject(occurrence);
     };
 
     this.actions.calendarUpdateOccurrence = (occurrence, properties) => {
